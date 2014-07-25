@@ -14,10 +14,16 @@
     <ClInclude Include="include\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\common.h">
+    <ClInclude Include="include\debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\debug.h">
+    <ClInclude Include="include\Singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Singularity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\prereqs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
