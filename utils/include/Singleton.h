@@ -26,38 +26,43 @@
 
 #include "prereqs.h"
 
-/**
- * Implements the singleton design pattern for the template parameter. The 
- * inheriting class must provide a default constructor that is accessible to 
- * its base classes.
- */
-template<typename T>
-class Singleton
+namespace libutil
 {
-  static_assert(std::is_class<T>::value, "Type must be a class");
 
-  Singleton() = default;
-
-public:
   /**
-   * Returns the singleton instance. Creates the instance if it has not been 
-   * initialized.
+   * Implements the singleton design pattern for the template parameter. The
+   * inheriting class must provide a default constructor that is accessible to
+   * its base classes.
    */
-  static T& getInstance();
+  template<typename T>
+  class Singleton
+  {
+    static_assert(std::is_class<T>::value, "Type must be a class");
 
-  Singleton(const Singleton&) = delete;
-  Singleton& operator =(const Singleton&) = delete;
-};
+    Singleton() = default;
 
-/******************************************************************************
- * Function definitions
- ******************************************************************************/
+  public:
+    /**
+     * Returns the singleton instance. Creates the instance if it has not been
+     * initialized.
+     */
+    static T& getInstance();
 
-template<typename T>
-T& Singleton<T>::getInstance()
-{
-  static T instance;
-  return instance;
+    Singleton(const Singleton&) = delete;
+    Singleton& operator =(const Singleton&) = delete;
+  };
+
+  /****************************************************************************
+   * Function definitions
+   ****************************************************************************/
+
+  template<typename T>
+  T& Singleton<T>::getInstance()
+  {
+    static T instance;
+    return instance;
+  }
+
 }
 
 #endif

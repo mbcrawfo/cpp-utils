@@ -29,56 +29,56 @@
 #ifndef PLATFORM_H_INCLUDED__
 #define PLATFORM_H_INCLUDED__
 
-#define SYSTEM_ARCH_32 0
-#define SYSTEM_ARCH_64 1
+#define LU_SYSTEM_ARCH_32 0
+#define LU_SYSTEM_ARCH_64 1
 
-#define SYSTEM_ENDIAN_LITTLE 0
-#define SYSTEM_ENDIAN_BIG 1
+#define LU_SYSTEM_ENDIAN_LITTLE 0
+#define LU_SYSTEM_ENDIAN_BIG 1
 
-#define COMPILER_MSVC 0
-#define COMPILER_GNUCXX 1
-#define COMPILER_CLANG 2
-#define COMPILER_INTEL 3
+#define LU_COMPILER_MSVC 0
+#define LU_COMPILER_GNUCXX 1
+#define LU_COMPILER_CLANG 2
+#define LU_COMPILER_INTEL 3
 
-#define PLATFORM_WINDOWS 0
-#define PLATFORM_LINUX 1
-#define PLATFORM_APPLE 2
+#define LU_PLATFORM_WINDOWS 0
+#define LU_PLATFORM_LINUX 1
+#define LU_PLATFORM_APPLE 2
 
 // set the system architecture type
 #if defined(__x86_64__) || defined(_M_X64) || defined(__LP64__)
-  #define SYSTEM_ARCH SYSTEM_ARCH_64
+  #define LU_SYSTEM_ARCH LU_SYSTEM_ARCH_64
 #else
-  #define SYSTEM_ARCH SYSTEM_ARCH_32
+  #define LU_SYSTEM_ARCH LU_SYSTEM_ARCH_32
 #endif
 
 // set the endianness (must be manually changed)
-#define SYSTEM_ENDIAN SYSTEM_ENDIAN_LITTLE
+#define LU_SYSTEM_ENDIAN LU_SYSTEM_ENDIAN_LITTLE
 
 // find the current compiler
 #if defined(_MSC_VER)
-  #define COMPILER COMPILER_MSVC
-  #define COMPILER_VERSION _MSC_VER
+  #define LU_COMPILER LU_COMPILER_MSVC
+  #define LU_COMPILER_VERSION _MSC_VER
 #elif defined(__GNUC__)
-  #define COMPILER COMPILER_GNUCXX
-  #define COMPILER_VERSION ((__GNUC__ * 100) + (__GNUC_MINOR__ * 10) + \
+  #define LU_COMPILER LU_COMPILER_GNUCXX
+  #define LU_COMPILER_VERSION ((__GNUC__ * 100) + (__GNUC_MINOR__ * 10) + \
     (__GNUC_PATCHLEVEL__))
 #elif defined(__clang__)
-  #define COMPILER COMPILER_CLANG
-  #define COMPILER_VERSION __clang_major__
+  #define LU_COMPILER LU_COMPILER_CLANG
+  #define LU_COMPILER_VERSION __clang_major__
 #elif defined(__INTEL_COMPILER)
-  #define COMPILER COMPILER_INTEL
-  #define COMPILER_VERSION __INTEL_COMPILER
+  #define LU_COMPILER LU_COMPILER_INTEL
+  #define LU_COMPILER_VERSION __INTEL_COMPILER
 #else
   #error Unknown compiler
 #endif
 
 // find the current platform
 #if defined(__WIN32__) || defined(_WIN32)
-  #define PLATFORM PLATFORM_WINDOWS
+  #define LU_PLATFORM LU_PLATFORM_WINDOWS
 #elif defined(__APPLE_CC__)
-  #define PLATFORM_APPLE
+  #define LU_PLATFORM_APPLE
 #else
-  #define PLATFORM PLATFORM_LINUX
+  #define LU_PLATFORM LU_PLATFORM_LINUX
 #endif
 
 #endif

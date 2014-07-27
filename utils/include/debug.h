@@ -29,6 +29,6 @@
 #define DEBUG_H_INCLUDED__
 
 // if defined, enables debugging in the STL
-//#define USE_STL_DEBUGGING
+//#define LU_USE_STL_DEBUGGING
 
 #endif

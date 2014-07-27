@@ -26,59 +26,64 @@
 
 #include "prereqs.h"
 
-/**
- * A variant of the singleton that allows for explicit instantiation and 
- * destruction of the instance, so that the class may use a non-default 
- * constructor. Single-instance is more loosely enforced (using assertions). 
- * 
- * Based on http://scottbilas.com/publications/gem-singleton/
- */
-template<typename T>
-class Singularity
+namespace libutil
 {
-  static_assert(std::is_class<T>::value, "Type must be a class");
 
-  static T* instance;
-
-public:
   /**
-   * Returns the class instance.  Class must be instantiated before usage.
+   * A variant of the singleton that allows for explicit instantiation and
+   * destruction of the instance, so that the class may use a non-default
+   * constructor. Single-instance is more loosely enforced (using assertions).
+   *
+   * Based on http://scottbilas.com/publications/gem-singleton/
    */
-  static T& getInstance();
+  template<typename T>
+  class Singularity
+  {
+    static_assert(std::is_class<T>::value, "Type must be a class");
 
-  Singularity();
-  ~Singularity();
+    static T* instance;
 
-  Singularity(const Singularity&) = delete;
-  Singularity& operator =(const Singularity&) = delete;
-};
+  public:
+    /**
+     * Returns the class instance.  Class must be instantiated before usage.
+     */
+    static T& getInstance();
 
-/******************************************************************************
-* Function definitions
-******************************************************************************/
+    Singularity();
+    ~Singularity();
 
-template<typename T>
-T* Singularity<T>::instance = nullptr;
+    Singularity(const Singularity&) = delete;
+    Singularity& operator =(const Singularity&) = delete;
+  };
 
-template<typename T>
-T& Singularity<T>::getInstance()
-{
-  assert(instance && "Not initialized");
-  return *instance;
-}
+  /****************************************************************************
+  * Function definitions
+  *****************************************************************************/
 
-template<typename T>
-Singularity<T>::Singularity()
-{
-  assert(!instance && "Duplicate initialization");
-  instance = static_cast<T*>(this);
-}
+  template<typename T>
+  T* Singularity<T>::instance = nullptr;
 
-template<typename T>
-Singularity<T>::~Singularity()
-{
-  assert(instance);
-  instance = nullptr;
+  template<typename T>
+  T& Singularity<T>::getInstance()
+  {
+    assert(instance && "Not initialized");
+    return *instance;
+  }
+
+  template<typename T>
+  Singularity<T>::Singularity()
+  {
+    assert(!instance && "Duplicate initialization");
+    instance = static_cast<T*>(this);
+  }
+
+  template<typename T>
+  Singularity<T>::~Singularity()
+  {
+    assert(instance);
+    instance = nullptr;
+  }
+
 }
 
 #endif
