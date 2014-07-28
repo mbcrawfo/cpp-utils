@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClInclude Include="include\memory\MemoryAllocator.h" />
     <ClInclude Include="include\memory\MemoryCounter.h" />
+    <ClInclude Include="include\memory\StdLibAllocator.h" />
     <ClInclude Include="include\prereqs.h" />
     <ClInclude Include="include\debug.h" />
     <ClInclude Include="include\platform.h" />
