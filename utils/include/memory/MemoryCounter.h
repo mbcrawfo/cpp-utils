@@ -21,8 +21,8 @@
 * SOFTWARE.
 */
 
-#ifndef MEMORYTRACKER_H__
-#define MEMORYTRACKER_H__
+#ifndef MEMORYCOUNTER_H__
+#define MEMORYCOUNTER_H__
 
 #include "prereqs.h"
 #include <unordered_map>
@@ -36,7 +36,7 @@ namespace libutil
    * name as the template parameter to create a new tracker for that subsystem.
    */
   template<typename System>
-  class MemoryTracker
+  class MemoryCounter
   {
     static std::size_t totalAllocations;
     static std::size_t totalFrees;
@@ -92,52 +92,52 @@ namespace libutil
   ****************************************************************************/
 
   template<typename System>
-  std::size_t MemoryTracker<System>::totalAllocations = 0;
+  std::size_t MemoryCounter<System>::totalAllocations = 0;
 
   template<typename System>
-  std::size_t MemoryTracker<System>::totalFrees = 0;
+  std::size_t MemoryCounter<System>::totalFrees = 0;
 
   template<typename System>
-  std::size_t MemoryTracker<System>::totalBytesAllocated = 0;
+  std::size_t MemoryCounter<System>::totalBytesAllocated = 0;
 
   template<typename System>
-  std::size_t MemoryTracker<System>::curNumAllocations = 0;
+  std::size_t MemoryCounter<System>::curNumAllocations = 0;
 
   template<typename System>
-  std::size_t MemoryTracker<System>::curBytesAllocated = 0;
+  std::size_t MemoryCounter<System>::curBytesAllocated = 0;
 
   template<typename System>
-  std::size_t MemoryTracker<System>::getTotalNumAllocations()
+  std::size_t MemoryCounter<System>::getTotalNumAllocations()
   {
     return totalAllocations;
   }
 
   template<typename System>
-  std::size_t MemoryTracker<System>::getTotalFrees()
+  std::size_t MemoryCounter<System>::getTotalFrees()
   {
     return totalFrees;
   }
 
   template<typename System>
-  std::size_t MemoryTracker<System>::getTotalBytes()
+  std::size_t MemoryCounter<System>::getTotalBytes()
   {
     return totalBytesAllocated;
   }
 
   template<typename System>
-  std::size_t MemoryTracker<System>::getCurrentAllocations()
+  std::size_t MemoryCounter<System>::getCurrentAllocations()
   {
     return curNumAllocations;
   }
 
   template<typename System>
-  std::size_t MemoryTracker<System>::getCurrentBytes()
+  std::size_t MemoryCounter<System>::getCurrentBytes()
   {
     return curBytesAllocated;
   }
 
   template<typename System>
-  void MemoryTracker<System>::trackAllocation(void* ptr, std::size_t sz)
+  void MemoryCounter<System>::trackAllocation(void* ptr, std::size_t sz)
   {
     assert(ptr != nullptr);
     totalAllocations++;
@@ -152,7 +152,7 @@ namespace libutil
   }
 
   template<typename System>
-  void MemoryTracker<System>::trackFree(void* ptr)
+  void MemoryCounter<System>::trackFree(void* ptr)
   {
     // catch duplicate frees
     assert(ptr != nullptr);

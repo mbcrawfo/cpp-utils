@@ -29,7 +29,7 @@
     <ClInclude Include="include\prereqs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\memory\MemoryTracker.h">
+    <ClInclude Include="include\memory\MemoryCounter.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
   </ItemGroup>
