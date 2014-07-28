@@ -32,5 +32,8 @@
     <ClInclude Include="include\memory\MemoryCounter.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\memory\MemoryAllocator.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

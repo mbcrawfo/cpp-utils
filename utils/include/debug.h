@@ -30,14 +30,14 @@
 
 // Enables debugging in the STL when defined, if it's supported by the 
 // implementation
-#define LU_DEBUG_STL
+//#define LU_DEBUG_STL
 
 // Enables tracking of memory allocations when defined
-#define LU_DEBUG_MEMORY_TRACK
+//#define LU_DEBUG_MEMORY_TRACK
 
 // Enables detailed memory tracking when defined. LU_DEBUG_MEMORY_TRACK must 
 // also be defined. When enabled, current usage is tracked as well as total 
 // usage
-#define LU_DEBUG_MEMORY_TRACK_DETAIL
+//#define LU_DEBUG_MEMORY_TRACK_DETAIL
 
 #endif

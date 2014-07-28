@@ -38,26 +38,34 @@ namespace libutil
   template<typename System>
   class MemoryCounter
   {
+#if defined(LU_DEBUG_MEMORY_TRACK)
     static std::size_t totalAllocations;
     static std::size_t totalFrees;
     static std::size_t totalBytesAllocated;
+
+  #if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
     static std::size_t curNumAllocations;
     static std::size_t curBytesAllocated;
-    static std::unordered_map<void*, std::size_t> allocations;
+    static std::unordered_map<const void*, std::size_t> allocations;
+  #endif
+#endif
 
   public:
     /**
-     * Returns the total number of allocations that have been done.
+     * Returns the total number of allocations that have been made over the 
+     * lifetime of the program.
      */
-    static std::size_t getTotalNumAllocations();
+    static std::size_t getTotalAllocs();
 
     /**
-     * Returns the total number of frees that have been done.
+     * Returns the total number of frees that have been done over the lifetime 
+     * of the program.
      */
     static std::size_t getTotalFrees();
 
     /**
-     * Returns the total number of bytes that have been allocated.
+     * Returns the total number of bytes that have been allocated over the 
+     * lifetime of the program.
      */
     static std::size_t getTotalBytes();
 
@@ -65,7 +73,7 @@ namespace libutil
      * Returns the number of allocations that are currently being used. Valid 
      * only when LU_DEBUG_MEMORY_TRACK_DETAIL is defined.
      */
-    static std::size_t getCurrentAllocations();
+    static std::size_t getCurrentAllocs();
 
     /**
      * Returns the bytes of memory that are currently in use. Valid only when 
@@ -78,92 +86,122 @@ namespace libutil
      * \param[in] ptr The address that was allocated.
      * \param[in] sz The size of the allocation.
      */
-    static void trackAllocation(void* ptr, std::size_t sz);
+    static void trackAlloc(const void* ptr, const std::size_t sz);
 
     /**
      * Adds a free to the memory tracker.
      * \param[in] ptr The address that was freed.
      */
-    static void trackFree(void* ptr);
+    static void trackFree(const void* ptr);
   };
 
   /****************************************************************************
   * Definitions
   ****************************************************************************/
 
+#if defined(LU_DEBUG_MEMORY_TRACK)
   template<typename System>
   std::size_t MemoryCounter<System>::totalAllocations = 0;
-
   template<typename System>
   std::size_t MemoryCounter<System>::totalFrees = 0;
-
   template<typename System>
   std::size_t MemoryCounter<System>::totalBytesAllocated = 0;
 
-  template<typename System>
-  std::size_t MemoryCounter<System>::curNumAllocations = 0;
+  #if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
+    template<typename System>
+    std::size_t MemoryCounter<System>::curNumAllocations = 0;
+
+    template<typename System>
+    std::size_t MemoryCounter<System>::curBytesAllocated = 0;
+
+    template<typename System>
+    std::unordered_map<const void*, std::size_t> 
+      MemoryCounter<System>::allocations;
+  #endif
+#endif
 
   template<typename System>
-  std::size_t MemoryCounter<System>::curBytesAllocated = 0;
-
-  template<typename System>
-  std::size_t MemoryCounter<System>::getTotalNumAllocations()
+  std::size_t MemoryCounter<System>::getTotalAllocs()
   {
+#if defined(LU_DEBUG_MEMORY_TRACK)
     return totalAllocations;
+#else
+    return 0;
+#endif
   }
 
   template<typename System>
   std::size_t MemoryCounter<System>::getTotalFrees()
   {
+#if defined(LU_DEBUG_MEMORY_TRACK)
     return totalFrees;
+#else
+    return 0;
+#endif
   }
 
   template<typename System>
   std::size_t MemoryCounter<System>::getTotalBytes()
   {
+#if defined(LU_DEBUG_MEMORY_TRACK)
     return totalBytesAllocated;
+#else
+    return 0;
+#endif
   }
 
   template<typename System>
-  std::size_t MemoryCounter<System>::getCurrentAllocations()
+  std::size_t MemoryCounter<System>::getCurrentAllocs()
   {
+#if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
     return curNumAllocations;
+#else
+    return 0;
+#endif
   }
 
   template<typename System>
   std::size_t MemoryCounter<System>::getCurrentBytes()
   {
-    return curBytesAllocated;
-  }
-
-  template<typename System>
-  void MemoryCounter<System>::trackAllocation(void* ptr, std::size_t sz)
-  {
-    assert(ptr != nullptr);
-    totalAllocations++;
-    totalBytesAllocated += sz;
-
 #if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
-    assert(allocations.count(ptr) == 0);
-    curNumAllocations++;
-    curBytesAllocated += sz;
-    allocations.emplace(ptr, sz);
+    return curBytesAllocated;
+#else
+    return 0;
 #endif
   }
 
   template<typename System>
-  void MemoryCounter<System>::trackFree(void* ptr)
+  void MemoryCounter<System>::trackAlloc(const void* ptr, const std::size_t sz)
   {
+#if defined(LU_DEBUG_MEMORY_TRACK)
+    assert(ptr != nullptr);
+    totalAllocations++;
+    totalBytesAllocated += sz;
+
+  #if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
+    assert(allocations.count(ptr) == 0);
+    curNumAllocations++;
+    curBytesAllocated += sz;
+    allocations.emplace(ptr, sz);
+  #endif
+#endif
+  }
+
+  template<typename System>
+  void MemoryCounter<System>::trackFree(const void* ptr)
+  {
+#if defined(LU_DEBUG_MEMORY_TRACK)
     // catch duplicate frees
     assert(ptr != nullptr);
     totalFrees++;
 
-#if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
+  #if defined(LU_DEBUG_MEMORY_TRACK_DETAIL)
     auto itr = allocations.find(ptr);
     assert(itr != allocations.end());
     curNumAllocations--;
     curBytesAllocated -= itr->second;
     allocations.erase(itr);
+  #endif
 #endif
   }
 
