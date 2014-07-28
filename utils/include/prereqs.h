@@ -38,26 +38,26 @@
   #define WIN32_LEAN_AND_MEAN
   #define NOMINMAX
 
-  #if defined(LU_USE_STL_DEBUGGING)
+  #if defined(LU_DEBUG_STL)
     #define _ITERATOR_DEBUG_LEVEL 1
   #else
     #define _ITERATOR_DEBUG_LEVEL 0
   #endif
 
 #elif LU_COMPILER == LU_COMPILER_GNUCXX
-  #if defined(LU_USE_STL_DEBUGGING)
+  #if defined(LU_DEBUG_STL)
     #define _GLIBCXX_DEBUG
   #else
     #undef _GLIBCXX_DEBUG
   #endif
 
 #elif LU_COMPILER == LU_COMPILER_CLANG
-  #if defined(LU_USE_STL_DEBUGGING)
+  #if defined(LU_DEBUG_STL)
     #error clang STL debug settings have not been added
   #endif
 
 #elif LU_COMPILER == LU_COMPILER_INTEL
-  #if defined(LU_USE_STL_DEBUGGING)
+  #if defined(LU_DEBUG_STL)
     #error Intel STL debug settings have not been added
   #endif
 #endif

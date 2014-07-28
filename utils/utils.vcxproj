@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\memory\MemoryTracker.h" />
     <ClInclude Include="include\prereqs.h" />
     <ClInclude Include="include\debug.h" />
     <ClInclude Include="include\platform.h" />

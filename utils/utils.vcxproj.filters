@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Header Files\memory">
+      <UniqueIdentifier>{04cd8d68-e14d-4847-a92d-38beca248e7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\platform.h">
@@ -25,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="include\prereqs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memory\MemoryTracker.h">
+      <Filter>Header Files\memory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
