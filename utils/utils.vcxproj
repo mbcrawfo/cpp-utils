@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\memory\memory.h" />
     <ClInclude Include="include\memory\MemoryAllocator.h" />
     <ClInclude Include="include\memory\MemoryCounter.h" />
     <ClInclude Include="include\memory\StdLibAllocator.h" />

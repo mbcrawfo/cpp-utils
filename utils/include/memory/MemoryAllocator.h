@@ -35,6 +35,10 @@ namespace libutil
    * tracking. Make a separate class/struct for each subsystem, and the 
    * allocator will automatically create a counter for the memory usage by that 
    * system.
+   * 
+   * Custom allocators can be created using this template. Any custom allocator 
+   * should have functions two malloc functions, realloc, and free with 
+   * signatures and functionality matching the functions in this class.
    */
   template<typename System>
   class MemoryAllocator
@@ -75,6 +79,11 @@ namespace libutil
 
     /**
      * Frees a previously allocated block of memory.
+     * \pre ptr should point to a block of memory that has not yet been freed. 
+     * Freeing a null pointer is a no-op. Freeing the same block of memory 
+     * twice is undefined.
+     * \post The memory block pointed to by ptr has been freed and is no longer 
+     * valid.
      * \param[in] ptr The memory location to free.
      */
     static void free(void* ptr);
@@ -131,11 +140,13 @@ namespace libutil
   template<typename System>
   void MemoryAllocator<System>::free(void* ptr)
   {
+    if (ptr)
+    {
 #if defined(LU_DEBUG_MEMORY_TRACK)
-    Counter::trackFree(ptr);
+      Counter::trackFree(ptr);
 #endif
-
-    std::free(ptr);
+      std::free(ptr);
+    }
   }
 }
 

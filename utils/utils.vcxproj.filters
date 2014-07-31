@@ -38,5 +38,8 @@
     <ClInclude Include="include\memory\StdLibAllocator.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\memory\memory.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
