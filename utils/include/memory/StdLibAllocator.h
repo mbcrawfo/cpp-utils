@@ -30,132 +30,131 @@
 namespace libutil
 {
 
-  /**
-   * Wraps an allocator in a class suitable for usage with the STL. Allocator 
-   * must conform to the model set by MemoryAllocator.
-   */
-  template<typename T, typename Allocator>
-  class StdLibAllocator
+/**
+  * Wraps an allocator in a class suitable for usage with the STL. Allocator 
+  * must conform to the model set by MemoryAllocator.
+  */
+template<typename T, typename Allocator>
+class StdLibAllocator
+{
+public:
+  // standard types
+  using value_type = T;
+  using pointer = T*;
+  using const_pointer = const T*;
+  using reference = T&;
+  using const_reference = const T&;
+  using void_pointer = void*;
+  using const_void_pointer = const void*;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+
+  template<typename U>
+  struct rebind
   {
-  public:
-    // standard types
-    using value_type = T;
-    using pointer = T*;
-    using const_pointer = const T*;
-    using reference = T&;
-    using const_reference = const T&;
-    using void_pointer = void*;
-    using const_void_pointer = const void*;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-
-    template<typename U>
-    struct rebind
-    {
-      using other = StdLibAllocator<U, Allocator>;
-    };
-
-    /**
-     * Allocate memory without constructing an object.
-     * \param[in] n The number of objects to allocate memory for.
-     * \param[in] cvptr Unused.
-     * \return A pointer to the allocated memory.
-     */
-    pointer allocate(const size_type n, const_void_pointer cvptr = nullptr);
-
-    /**
-     * Frees memory previously allocated by allocate, without calling 
-     * destructors.
-     * \param[in] ptr The memory to deallocate.
-     * \param[in] n Unused.
-     */
-    void deallocate(pointer ptr, const size_type n);
-
-    /**
-     * Returns the maximum number of objects of type T that may be allocated.
-     */
-    size_type max_size();
-
-    /**
-     * Constructs an object using previously allocated memory.
-     * \param[in,out] ptr The memory where the object should be constructed, 
-     * points to the constructed object after return.
-     * \param[in] args The parameters that will be passed the the constructor.
-     */
-    template<typename ...Args>
-    void construct(pointer ptr, Args&&... args);
-
-    /**
-     * Calls the destructor of an object, but does not free memory.
-     * \param[in] ptr The object to destroy.
-     */
-    void destroy(pointer ptr);
+    using other = StdLibAllocator<U, Allocator>;
   };
 
-  // all allocators evaluate as equal
-  template<typename T, typename U, typename Allocator>
-  bool operator ==(const StdLibAllocator<T, Allocator>&,
-                   const StdLibAllocator<U, Allocator>&);
+  /**
+    * Allocate memory without constructing an object.
+    * \param[in] n The number of objects to allocate memory for.
+    * \param[in] cvptr Unused.
+    * \return A pointer to the allocated memory.
+    */
+  pointer allocate(const size_type n, const_void_pointer cvptr = nullptr);
 
-  template<typename T, typename U, typename Allocator>
-  bool operator !=(const StdLibAllocator<T, Allocator>&,
-                   const StdLibAllocator<U, Allocator>&);
+  /**
+    * Frees memory previously allocated by allocate, without calling 
+    * destructors.
+    * \param[in] ptr The memory to deallocate.
+    * \param[in] n Unused.
+    */
+  void deallocate(pointer ptr, const size_type n);
 
-  /****************************************************************************
-  * Definitions
-  ****************************************************************************/
-  
-  template<typename T, typename Allocator>
-  typename StdLibAllocator<T, Allocator>::pointer
-    StdLibAllocator<T, Allocator>::allocate(const size_type n,
-                                            const_void_pointer cvptr)
-    {
-      // suppress warnings
-      static_cast<void>(cvptr);
-      return static_cast<pointer>(Allocator::malloc(sizeof(T) * n));
-    }
+  /**
+    * Returns the maximum number of objects of type T that may be allocated.
+    */
+  size_type max_size();
 
-  template<typename T, typename Allocator>
-  void StdLibAllocator<T, Allocator>::deallocate(pointer ptr, const size_type n)
-  {
-    // suppress warnings
-    static_cast<void>(n);
-    Allocator::free(ptr);
-  }
-
-  template<typename T, typename Allocator>
-  typename StdLibAllocator<T, Allocator>::size_type
-    StdLibAllocator<T, Allocator>::max_size()
-    {
-      return std::numeric_limits<size_type>::max() / sizeof(T);
-    }
-
-  template<typename T, typename Allocator>
+  /**
+    * Constructs an object using previously allocated memory.
+    * \param[in,out] ptr The memory where the object should be constructed, 
+    * points to the constructed object after return.
+    * \param[in] args The parameters that will be passed the the constructor.
+    */
   template<typename ...Args>
-  void StdLibAllocator<T, Allocator>::construct(pointer ptr, Args&&... args)
+  void construct(pointer ptr, Args&&... args);
+
+  /**
+    * Calls the destructor of an object, but does not free memory.
+    * \param[in] ptr The object to destroy.
+    */
+  void destroy(pointer ptr);
+};
+
+// all allocators evaluate as equal
+template<typename T, typename U, typename Allocator>
+bool operator ==(const StdLibAllocator<T, Allocator>&,
+                  const StdLibAllocator<U, Allocator>&);
+
+template<typename T, typename U, typename Allocator>
+bool operator !=(const StdLibAllocator<T, Allocator>&,
+                  const StdLibAllocator<U, Allocator>&);
+
+/****************************************************************************
+* Definitions
+****************************************************************************/
+  
+template<typename T, typename Allocator>
+typename StdLibAllocator<T, Allocator>::pointer
+  StdLibAllocator<T, Allocator>::allocate(const size_type n,
+                                          const_void_pointer cvptr)
   {
-    new (ptr) T(std::forward<Args>(args)...);
+    LU_UNUSED(cvptr);
+    return static_cast<pointer>(Allocator::malloc(sizeof(T) * n));
   }
 
-  template<typename T, typename Allocator>
-  void StdLibAllocator<T, Allocator>::destroy(pointer ptr)
+template<typename T, typename Allocator>
+void StdLibAllocator<T, Allocator>::deallocate(pointer ptr, const size_type n)
+{
+  LU_UNUSED(n);
+  Allocator::free(ptr);
+}
+
+template<typename T, typename Allocator>
+typename StdLibAllocator<T, Allocator>::size_type
+  StdLibAllocator<T, Allocator>::max_size()
   {
-    ptr->~T();
+    return std::numeric_limits<size_type>::max() / sizeof(T);
   }
 
-  template<typename T, typename U, typename Allocator>
-  bool operator ==(const StdLibAllocator<T, Allocator>&,
-                   const StdLibAllocator<U, Allocator>&)
-  {
-    return true;
-  }
+template<typename T, typename Allocator>
+template<typename ...Args>
+void StdLibAllocator<T, Allocator>::construct(pointer ptr, Args&&... args)
+{
+  new (ptr) T(std::forward<Args>(args)...);
+}
 
-  template<typename T, typename U, typename Allocator>
-  bool operator !=(const StdLibAllocator<T, Allocator>&,
-                   const StdLibAllocator<U, Allocator>&)
-  {
-    return false;
-  }
+template<typename T, typename Allocator>
+void StdLibAllocator<T, Allocator>::destroy(pointer ptr)
+{
+  ptr->~T();
+}
+
+template<typename T, typename U, typename Allocator>
+bool operator ==(const StdLibAllocator<T, Allocator>&,
+                  const StdLibAllocator<U, Allocator>&)
+{
+  return true;
+}
+
+template<typename T, typename U, typename Allocator>
+bool operator !=(const StdLibAllocator<T, Allocator>&,
+                  const StdLibAllocator<U, Allocator>&)
+{
+  return false;
+}
+
 }
 
 #endif

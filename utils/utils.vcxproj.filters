@@ -12,18 +12,15 @@
     <Filter Include="Header Files\memory">
       <UniqueIdentifier>{04cd8d68-e14d-4847-a92d-38beca248e7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utility">
+      <UniqueIdentifier>{7ac4f654-444a-40e3-9381-ec5f8f844992}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Singularity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\prereqs.h">
@@ -40,6 +37,12 @@
     </ClInclude>
     <ClInclude Include="include\memory\memory.h">
       <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utility\Singleton.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utility\Singularity.h">
+      <Filter>Header Files\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

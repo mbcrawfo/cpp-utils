@@ -81,8 +81,8 @@
     <ClInclude Include="include\prereqs.h" />
     <ClInclude Include="include\debug.h" />
     <ClInclude Include="include\platform.h" />
-    <ClInclude Include="include\Singleton.h" />
-    <ClInclude Include="include\Singularity.h" />
+    <ClInclude Include="include\utility\Singleton.h" />
+    <ClInclude Include="include\utility\Singularity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

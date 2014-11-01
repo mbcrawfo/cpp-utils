@@ -29,39 +29,39 @@
 namespace libutil
 {
 
+/**
+  * Implements the singleton design pattern for the template parameter. The
+  * inheriting class must provide a default constructor that is accessible to
+  * its base classes.
+  */
+template<typename T>
+class Singleton
+{
+  static_assert(std::is_class<T>::value, "Type must be a class");
+
+  Singleton() = default;
+
+public:
   /**
-   * Implements the singleton design pattern for the template parameter. The
-   * inheriting class must provide a default constructor that is accessible to
-   * its base classes.
-   */
-  template<typename T>
-  class Singleton
-  {
-    static_assert(std::is_class<T>::value, "Type must be a class");
+    * Returns the singleton instance. Creates the instance if it has not been
+    * initialized.
+    */
+  static T& getInstance();
 
-    Singleton() = default;
+  Singleton(const Singleton&) = delete;
+  Singleton& operator =(const Singleton&) = delete;
+};
 
-  public:
-    /**
-     * Returns the singleton instance. Creates the instance if it has not been
-     * initialized.
-     */
-    static T& getInstance();
+/****************************************************************************
+  * Function definitions
+  ****************************************************************************/
 
-    Singleton(const Singleton&) = delete;
-    Singleton& operator =(const Singleton&) = delete;
-  };
-
-  /****************************************************************************
-   * Function definitions
-   ****************************************************************************/
-
-  template<typename T>
-  T& Singleton<T>::getInstance()
-  {
-    static T instance;
-    return instance;
-  }
+template<typename T>
+T& Singleton<T>::getInstance()
+{
+  static T instance;
+  return instance;
+}
 
 }
 

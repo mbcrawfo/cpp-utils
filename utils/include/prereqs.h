@@ -32,6 +32,9 @@
 #include "platform.h"
 #include "debug.h"
 
+// Use to suppress warnings on unused code.
+#define LU_UNUSED(x) static_cast<void>(x)
+
 // set compiler specific options
 #if LU_COMPILER == LU_COMPILER_MSVC
   #define _CRT_SECURE_NO_WARNINGS
@@ -72,5 +75,7 @@
 #include <utility>
 #include <limits>
 #include <memory>
+#include <new>
+#include <stdexcept>
 
 #endif
