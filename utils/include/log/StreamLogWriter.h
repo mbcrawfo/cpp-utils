@@ -21,23 +21,52 @@
 * SOFTWARE.
 */
 
-/** \file
- * Controls settings used to control debugging features.
+#ifndef STREAMLOGWRITER_H_INCLUDED__
+#define STREAMLOGWRITER_H_INCLUDED__
+
+#include "prereqs.h"
+#include "log/LogWriter.h"
+#include <ostream>
+
+namespace libutil
+{
+
+/**
+ * This writer wraps a stream, sending all log output to that stream.
  */
+class StreamLogWriter final
+  : public LogWriter
+{
+private:
+  std::ostream& stream;
 
-#ifndef DEBUG_H_INCLUDED__
-#define DEBUG_H_INCLUDED__
+public:
+  // constructors
+  StreamLogWriter() = delete;
+  StreamLogWriter(const StreamLogWriter&) = default;
+  StreamLogWriter(std::ostream& stream);
+  // destructor
+  virtual ~StreamLogWriter() = default;
+  // operators
+  StreamLogWriter& operator=(const StreamLogWriter&) = delete;
 
-// Enables debugging in the STL when defined, if it's supported by the 
-// implementation
-//#define LU_DEBUG_STL
+protected:
+  virtual void output(const std::string& msg) override;
+};
 
-// Enables tracking of memory allocations when defined
-#define LU_DEBUG_MEMORY_TRACK
+// Writers for standard output and error
+extern StreamLogWriter StdOutLogWriter;
+extern StreamLogWriter StdErrLogWriter;
 
-// Enables detailed memory tracking when defined. LU_DEBUG_MEMORY_TRACK must 
-// also be defined. When enabled, current usage is tracked as well as total 
-// usage
-#define LU_DEBUG_MEMORY_TRACK_DETAIL
+/****************************************************************************
+* Definitions
+****************************************************************************/
+
+void StreamLogWriter::output(const std::string& msg)
+{
+  stream << msg << std::endl;
+}
+
+}
 
 #endif

@@ -15,6 +15,12 @@
     <Filter Include="Header Files\utility">
       <UniqueIdentifier>{7ac4f654-444a-40e3-9381-ec5f8f844992}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\log">
+      <UniqueIdentifier>{09624bad-f5bb-48ce-a60e-d134e27d9513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\log">
+      <UniqueIdentifier>{fdb3c344-7744-4b8f-aff8-d2e27ffdb88b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\platform.h">
@@ -44,5 +50,22 @@
     <ClInclude Include="include\utility\Singularity.h">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\log\LogMessage.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\log\ILogFormatter.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\log\LogWriter.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\log\StreamLogWriter.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\log\StreamLogWriter.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

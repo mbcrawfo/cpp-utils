@@ -21,23 +21,29 @@
 * SOFTWARE.
 */
 
-/** \file
- * Controls settings used to control debugging features.
+#ifndef ILOGFORMATTER_H_INCLUDED__
+#define ILOGFORMATTER_H_INCLUDED__
+
+#include "prereqs.h"
+#include "log/LogMessage.h"
+
+namespace libutil
+{
+
+/**
+ * The interface providing formatting customization of log messages.
  */
+class ILogFormatter
+{
+public:
+  virtual ~ILogFormatter() = default;
 
-#ifndef DEBUG_H_INCLUDED__
-#define DEBUG_H_INCLUDED__
+  /**
+   * Formats a log message into a single string.
+   */
+  virtual std::string format(const LogMessage& msg) = 0;
+};
 
-// Enables debugging in the STL when defined, if it's supported by the 
-// implementation
-//#define LU_DEBUG_STL
-
-// Enables tracking of memory allocations when defined
-#define LU_DEBUG_MEMORY_TRACK
-
-// Enables detailed memory tracking when defined. LU_DEBUG_MEMORY_TRACK must 
-// also be defined. When enabled, current usage is tracked as well as total 
-// usage
-#define LU_DEBUG_MEMORY_TRACK_DETAIL
+}
 
 #endif

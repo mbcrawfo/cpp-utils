@@ -21,23 +21,13 @@
 * SOFTWARE.
 */
 
-/** \file
- * Controls settings used to control debugging features.
- */
+#include "log/StreamLogWriter.h"
+#include <iostream>
 
-#ifndef DEBUG_H_INCLUDED__
-#define DEBUG_H_INCLUDED__
+namespace libutil
+{
 
-// Enables debugging in the STL when defined, if it's supported by the 
-// implementation
-//#define LU_DEBUG_STL
+StreamLogWriter StdOutLogWriter(std::cout);
+StreamLogWriter StdErrLogWriter(std::cerr);
 
-// Enables tracking of memory allocations when defined
-#define LU_DEBUG_MEMORY_TRACK
-
-// Enables detailed memory tracking when defined. LU_DEBUG_MEMORY_TRACK must 
-// also be defined. When enabled, current usage is tracked as well as total 
-// usage
-#define LU_DEBUG_MEMORY_TRACK_DETAIL
-
-#endif
+}

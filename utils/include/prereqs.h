@@ -78,4 +78,12 @@
 #include <new>
 #include <stdexcept>
 
+/** Convenience type for shared pointers. */
+template<typename T>
+using StrongPtr = std::shared_ptr<T>;
+
+/** Convenience type for weak pointers. */
+template<typename T>
+using WeakPtr = std::weak_ptr<T>;
+
 #endif
