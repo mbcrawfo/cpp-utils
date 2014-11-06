@@ -62,6 +62,12 @@
     <ClInclude Include="include\log\StreamLogWriter.h">
       <Filter>Header Files\log</Filter>
     </ClInclude>
+    <ClInclude Include="include\utility\IHashable.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utility\IToString.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\log\StreamLogWriter.cpp">
