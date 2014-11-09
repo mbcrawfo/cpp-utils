@@ -91,32 +91,32 @@ protected:
 * Definitions
 ****************************************************************************/
 
-LogWriter::LogWriter()
+inline LogWriter::LogWriter()
   : formatter(nullptr), level(LogLevel::All)
 {
 }
 
-void LogWriter::setFormatter(StrongPtr<ILogFormatter> formatter)
+inline void LogWriter::setFormatter(StrongPtr<ILogFormatter> formatter)
 {
   this->formatter = formatter;
 }
 
-StrongPtr<ILogFormatter> LogWriter::getFormatter() const
+inline StrongPtr<ILogFormatter> LogWriter::getFormatter() const
 {
   return formatter;
 }
 
-void LogWriter::setLevel(LogLevel level)
+inline void LogWriter::setLevel(LogLevel level)
 {
   this->level = level;
 }
 
-libutil::LogLevel LogWriter::getLevel() const
+inline libutil::LogLevel LogWriter::getLevel() const
 {
   return level;
 }
 
-void LogWriter::write(StrongPtr<LogMessage> msg)
+inline void LogWriter::write(StrongPtr<LogMessage> msg)
 {
   assert(msg != nullptr);
   if (level >= msg->level)

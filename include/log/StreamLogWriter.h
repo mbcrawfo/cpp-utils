@@ -62,7 +62,12 @@ extern StreamLogWriter StdErrLogWriter;
 * Definitions
 ****************************************************************************/
 
-void StreamLogWriter::output(const std::string& msg)
+inline StreamLogWriter::StreamLogWriter(std::ostream& stream)
+  : stream(stream)
+{
+}
+
+inline void StreamLogWriter::output(const std::string& msg)
 {
   stream << msg << std::endl;
 }

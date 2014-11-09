@@ -55,7 +55,7 @@ enum class LogLevel
 /**
  * Get the string representation of a log level.
  */
-inline std::string toString(const LogLevel level);
+std::string toString(const LogLevel level);
 
 /**
  * Encapsulates all of the information about a log message.
@@ -83,7 +83,7 @@ struct LogMessage final
 * Definitions
 ****************************************************************************/
 
-std::string toString(const LogLevel level)
+inline std::string toString(const LogLevel level)
 {
   switch (level)
   {
