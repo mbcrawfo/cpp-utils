@@ -227,6 +227,11 @@ void Log::logv(LogLevel level, const std::string& tag, const char* fmt,
   dispatch(level, tag, msg);
 }
 
+Log::StreamHelper Log::stream(LogLevel level, const std::string& tag)
+{
+  return StreamHelper(*this, level, tag);
+}
+
 void Log::dispatch(LogLevel level, const std::string& tag, 
   const std::string& msg)
 {
@@ -243,6 +248,24 @@ void Log::dispatch(LogLevel level, const std::string& tag,
   {
     writer.second->write(lm);
   }
+}
+
+Log::StreamHelper::StreamHelper(Log& log, LogLevel level, 
+  const std::string& tag)
+  : log(log), level(level), tag(tag), os()
+{
+}
+
+Log::StreamHelper::~StreamHelper()
+{
+  log.log(level, tag, os.str());
+}
+
+Log::StreamHelper& Log::StreamHelper::operator<<(
+  Log::StreamHelper::Manipulator manip)
+{
+  manip(os);
+  return *this;
 }
 
 }

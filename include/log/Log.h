@@ -29,6 +29,7 @@
 #include "log/LogWriter.h"
 #include <unordered_map>
 #include <cstdarg>
+#include <sstream>
 
 namespace libutil
 {
@@ -45,6 +46,8 @@ private:
   std::string logName;
   LogLevel outputLevel;
   std::unordered_map<std::string, StrongLogWriterPtr> writers;
+
+  class StreamHelper;
   
 public:
   // constructors
@@ -128,16 +131,73 @@ public:
     va_list args);
   // \}
 
+  /**
+   * Returns a helper object that allows the log to accept stream input.  
+   * You should never hold a reference to the helper, because if the helper 
+   * outlives the log that created it, bad things will happen.  Also, the 
+   * helper does not forward its accumulated input back to the log until it is 
+   * destroyed.
+   */
+  StreamHelper stream(LogLevel level, const std::string& tag);
+
 private:
   /**
    * Creates a LogMessage from the provided parameters and forwards that 
    * message to the writers of this log.
    */
   void dispatch(LogLevel level, const std::string& tag, const std::string& msg);
+
+  /**
+   * Helper class that allows logs to accept stream input.  Input is 
+   * accumulated in a stringstream and dispatched back to the log when the 
+   * helper is destroyed.
+   */
+  class StreamHelper final
+  {
+  private:
+    Log& log;
+    const LogLevel level;
+    const std::string tag;
+    std::ostringstream os;    
+
+  public:
+    using Manipulator = std::ostream& (*)(std::ostream&);
+
+    // constructors
+    StreamHelper() = delete;
+    StreamHelper(Log& log, LogLevel level, const std::string& tag);
+    StreamHelper(const StreamHelper&) = delete;
+    // destructor
+    ~StreamHelper();    
+    // operators
+    StreamHelper& operator=(const StreamHelper&) = delete;
+
+    /**
+     * Insert an object into the helper stream.
+     */
+    template<typename T>
+    StreamHelper& operator<<(const T& arg);
+
+    /**
+     * Apply a stream manipulator to the stream.
+     */
+    StreamHelper& operator<<(Manipulator manip);
+  };
 };
 
 using StrongLogPtr = StrongPtr<Log>;
 using WeakLogPtr = WeakPtr<Log>;
+
+/****************************************************************************
+* Definitions
+****************************************************************************/
+
+template<typename T>
+Log::StreamHelper& Log::StreamHelper::operator<<(const T& arg)
+{
+  os << arg;
+  return *this;
+}
 
 }
 
