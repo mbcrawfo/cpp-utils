@@ -147,6 +147,9 @@ private:
    */
   void dispatch(LogLevel level, const std::string& tag, const std::string& msg);
 
+
+  class StreamHelperImpl;
+
   /**
    * Helper class that allows logs to accept stream input.  Input is 
    * accumulated in a stringstream and dispatched back to the log when the 
@@ -155,10 +158,7 @@ private:
   class StreamHelper final
   {
   private:
-    Log& log;
-    const LogLevel level;
-    const std::string tag;
-    std::ostringstream os;    
+    StrongPtr<StreamHelperImpl> impl;
 
   public:
     using Manipulator = std::ostream& (*)(std::ostream&);
@@ -167,8 +167,6 @@ private:
     StreamHelper() = delete;
     StreamHelper(Log& log, LogLevel level, const std::string& tag);
     StreamHelper(const StreamHelper&) = default;
-    // destructor
-    ~StreamHelper();    
     // operators
     StreamHelper& operator=(const StreamHelper&) = delete;
 
@@ -183,6 +181,26 @@ private:
      */
     StreamHelper& operator<<(Manipulator manip);
   };
+
+  class StreamHelperImpl
+  {
+  private:
+    Log& log;
+    const LogLevel level;
+    const std::string tag;
+
+  public:
+    std::ostringstream os;
+
+    // constructors
+    StreamHelperImpl() = delete;
+    StreamHelperImpl(Log& log, LogLevel level, const std::string& tag);
+    StreamHelperImpl(const StreamHelperImpl&) = delete;
+    // destructors
+    ~StreamHelperImpl();
+    // operators
+    StreamHelperImpl& operator=(StreamHelperImpl&) = delete;
+  };
 };
 
 using StrongLogPtr = StrongPtr<Log>;
@@ -195,7 +213,7 @@ using WeakLogPtr = WeakPtr<Log>;
 template<typename T>
 Log::StreamHelper& Log::StreamHelper::operator<<(const T& arg)
 {
-  os << arg;
+  impl->os << arg;
   return *this;
 }
 

@@ -252,20 +252,29 @@ void Log::dispatch(LogLevel level, const std::string& tag,
 
 Log::StreamHelper::StreamHelper(Log& log, LogLevel level, 
   const std::string& tag)
-  : log(log), level(level), tag(tag), os()
+  : impl(new StreamHelperImpl(log, level, tag))
 {
-}
-
-Log::StreamHelper::~StreamHelper()
-{
-  log.log(level, tag, os.str());
 }
 
 Log::StreamHelper& Log::StreamHelper::operator<<(
   Log::StreamHelper::Manipulator manip)
 {
-  manip(os);
+  manip(impl->os);
   return *this;
+}
+
+Log::StreamHelperImpl::StreamHelperImpl(Log& log, LogLevel level, 
+  const std::string& tag) 
+: log(log),
+  level(level),
+  tag(tag),
+  os()
+{
+}
+
+Log::StreamHelperImpl::~StreamHelperImpl()
+{
+  log.log(level, tag, os.str());
 }
 
 }
