@@ -24,7 +24,7 @@
 #include "log/Log.h"
 #include <cstdio>
 
-static const std::size_t PRINTF_BUFFER_SIZE = 256;
+static const int PRINTF_BUFFER_SIZE = 256;
 
 namespace libutil
 {

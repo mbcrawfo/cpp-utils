@@ -166,7 +166,7 @@ private:
     // constructors
     StreamHelper() = delete;
     StreamHelper(Log& log, LogLevel level, const std::string& tag);
-    StreamHelper(const StreamHelper&) = delete;
+    StreamHelper(const StreamHelper&) = default;
     // destructor
     ~StreamHelper();    
     // operators
