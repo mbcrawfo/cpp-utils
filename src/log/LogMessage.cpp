@@ -32,6 +32,8 @@ std::string toString(const LogLevel level)
   {
   case LogLevel::All:
     return "All";
+  case LogLevel::Verbose:
+    return "Verbose";
   case LogLevel::Debug:
     return "Debug";
   case LogLevel::Info:
