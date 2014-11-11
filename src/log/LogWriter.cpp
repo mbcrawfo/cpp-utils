@@ -21,19 +21,48 @@
 * SOFTWARE.
 */
 
-#include "log/StreamLogWriter.h"
+#include "log/LogWriter.h"
 
 namespace libutil
 {
 
-StreamLogWriter::StreamLogWriter(std::ostream& stream)
-  : stream(stream)
+LogWriter::LogWriter()
+  : formatter(nullptr), outputLevel(LogLevel::All)
+{}
+
+void LogWriter::setFormatter(StrongLogFormatterPtr formatter)
 {
+  this->formatter = formatter;
 }
 
-void StreamLogWriter::output(const std::string& msg)
+StrongLogFormatterPtr LogWriter::getFormatter() const
 {
-  stream << msg << std::endl;
+  return formatter;
+}
+
+void LogWriter::setLevel(LogLevel level)
+{
+  outputLevel = level;
+}
+
+LogLevel LogWriter::getLevel() const
+{
+  return outputLevel;
+}
+
+bool LogWriter::isActive(LogLevel level) const
+{
+  return outputLevel <= level;
+}
+
+void LogWriter::write(StrongLogMessagePtr msg)
+{
+  assert(msg != nullptr);
+  if (isActive(msg->level))
+  {
+    assert(formatter != nullptr);
+    output(formatter->format(*msg));
+  }
 }
 
 }

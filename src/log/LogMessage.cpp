@@ -21,19 +21,31 @@
 * SOFTWARE.
 */
 
-#include "log/StreamLogWriter.h"
+#include "log/LogMessage.h"
 
 namespace libutil
 {
 
-StreamLogWriter::StreamLogWriter(std::ostream& stream)
-  : stream(stream)
+std::string toString(const LogLevel level)
 {
-}
+  switch (level)
+  {
+  case LogLevel::All:
+    return "All";
+  case LogLevel::Debug:
+    return "Debug";
+  case LogLevel::Info:
+    return "Info";
+  case LogLevel::Warning:
+    return "Warning";
+  case LogLevel::Error:
+    return "Error";
+  case LogLevel::None:
+    return "None";
+  }
 
-void StreamLogWriter::output(const std::string& msg)
-{
-  stream << msg << std::endl;
+  // suppress warnings
+  return "";
 }
 
 }

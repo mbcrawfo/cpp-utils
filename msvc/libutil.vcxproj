@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\debug.h" />
     <ClInclude Include="..\include\log\ILogFormatter.h" />
+    <ClInclude Include="..\include\log\Log.h" />
     <ClInclude Include="..\include\log\LogMessage.h" />
     <ClInclude Include="..\include\log\LogWriter.h" />
     <ClInclude Include="..\include\log\StreamLogWriter.h" />
@@ -95,6 +96,9 @@
     <ClInclude Include="..\include\utility\Singularity.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\log\Log.cpp" />
+    <ClCompile Include="..\src\log\LogMessage.cpp" />
+    <ClCompile Include="..\src\log\LogWriter.cpp" />
     <ClCompile Include="..\src\log\StreamLogWriter.cpp" />
     <ClCompile Include="..\test\test.cpp" />
   </ItemGroup>

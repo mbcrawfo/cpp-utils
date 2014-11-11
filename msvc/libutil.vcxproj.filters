@@ -71,12 +71,24 @@
     <ClInclude Include="..\include\utility\Singularity.h">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\log\Log.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\test\test.cpp">
       <Filter>Source Files\test</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\log\Log.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\log\StreamLogWriter.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\log\LogMessage.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\log\LogWriter.cpp">
       <Filter>Source Files\log</Filter>
     </ClCompile>
   </ItemGroup>

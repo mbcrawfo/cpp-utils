@@ -44,6 +44,9 @@ public:
   virtual std::string format(const LogMessage& msg) = 0;
 };
 
+using StrongLogFormatterPtr = StrongPtr<ILogFormatter>;
+using WeakLogFormatterPtr = WeakPtr<ILogFormatter>;
+
 }
 
 #endif

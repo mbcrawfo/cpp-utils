@@ -44,7 +44,7 @@ public:
   // constructors
   StreamLogWriter() = delete;
   StreamLogWriter(const StreamLogWriter&) = default;
-  StreamLogWriter(std::ostream& stream);
+  explicit StreamLogWriter(std::ostream& stream);
   // destructor
   virtual ~StreamLogWriter() = default;
   // operators
@@ -53,24 +53,6 @@ public:
 protected:
   virtual void output(const std::string& msg) override;
 };
-
-// Writers for standard output and error
-extern StreamLogWriter StdOutLogWriter;
-extern StreamLogWriter StdErrLogWriter;
-
-/****************************************************************************
-* Definitions
-****************************************************************************/
-
-inline StreamLogWriter::StreamLogWriter(std::ostream& stream)
-  : stream(stream)
-{
-}
-
-inline void StreamLogWriter::output(const std::string& msg)
-{
-  stream << msg << std::endl;
-}
 
 }
 

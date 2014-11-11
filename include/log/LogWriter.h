@@ -43,8 +43,8 @@ namespace libutil
 class LogWriter
 {
 private:
-  StrongPtr<ILogFormatter> formatter;
-  LogLevel level;
+  StrongLogFormatterPtr formatter;
+  LogLevel outputLevel;
 
 public:
   // constructors
@@ -58,12 +58,12 @@ public:
   /**
    * Sets the formatter used by this writer.
    */
-  void setFormatter(StrongPtr<ILogFormatter> formatter);
+  void setFormatter(StrongLogFormatterPtr formatter);
 
   /**
    * Retrieves the formatter.
    */
-  StrongPtr<ILogFormatter> getFormatter() const;
+  StrongLogFormatterPtr getFormatter() const;
 
   /**
    * Sets the output level of the writer.
@@ -76,9 +76,14 @@ public:
   LogLevel getLevel() const;
 
   /**
+   * Returns true if the level is being written.
+   */
+  bool isActive(LogLevel level) const;
+
+  /**
    * Sends a single message to the writer.  
    */
-  void write(StrongPtr<LogMessage> msg);
+  void write(StrongLogMessagePtr msg);
 
 protected:
   /**
@@ -87,44 +92,8 @@ protected:
   virtual void output(const std::string& msg) = 0;
 };
 
-/****************************************************************************
-* Definitions
-****************************************************************************/
-
-inline LogWriter::LogWriter()
-  : formatter(nullptr), level(LogLevel::All)
-{
-}
-
-inline void LogWriter::setFormatter(StrongPtr<ILogFormatter> formatter)
-{
-  this->formatter = formatter;
-}
-
-inline StrongPtr<ILogFormatter> LogWriter::getFormatter() const
-{
-  return formatter;
-}
-
-inline void LogWriter::setLevel(LogLevel level)
-{
-  this->level = level;
-}
-
-inline libutil::LogLevel LogWriter::getLevel() const
-{
-  return level;
-}
-
-inline void LogWriter::write(StrongPtr<LogMessage> msg)
-{
-  assert(msg != nullptr);
-  if (level >= msg->level)
-  {
-    assert(formatter != nullptr);
-    output(formatter->format(*msg));
-  }
-}
+using StrongLogWriterPtr = StrongPtr<LogWriter>;
+using WeakLogWriterPtr = WeakPtr<LogWriter>;
 
 }
 
