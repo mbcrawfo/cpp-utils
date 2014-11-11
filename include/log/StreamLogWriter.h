@@ -28,7 +28,7 @@
 #include "log/LogWriter.h"
 #include <ostream>
 
-namespace libutil
+namespace util
 {
 
 /**

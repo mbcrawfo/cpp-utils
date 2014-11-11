@@ -27,7 +27,7 @@
 #include "prereqs.h"
 #include "log/LogMessage.h"
 
-namespace libutil
+namespace util
 {
 
 /**

@@ -26,7 +26,7 @@
 
 #include "prereqs.h"
 
-namespace libutil
+namespace util
 {
 
 /**

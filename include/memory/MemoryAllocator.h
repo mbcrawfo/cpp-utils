@@ -27,7 +27,7 @@
 #include "prereqs.h"
 #include "memory/MemoryCounter.h"
 
-namespace libutil
+namespace util
 {
 
 /**

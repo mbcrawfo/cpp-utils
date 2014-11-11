@@ -30,7 +30,6 @@
 #define COMMON_H_INCLUDED__
 
 #include "platform.h"
-#include "debug.h"
 
 // Use to suppress warnings on unused code.
 #define LU_UNUSED(x) static_cast<void>(x)
@@ -41,18 +40,7 @@
   #define WIN32_LEAN_AND_MEAN
   #define NOMINMAX
 
-  #if defined(LU_DEBUG_STL)
-    #define _ITERATOR_DEBUG_LEVEL 1
-  #else
-    #define _ITERATOR_DEBUG_LEVEL 0
-  #endif
-
 #elif LU_COMPILER == LU_COMPILER_GNUCXX
-  #if defined(LU_DEBUG_STL)
-    #define _GLIBCXX_DEBUG
-  #else
-    #undef _GLIBCXX_DEBUG
-  #endif
 
 #elif LU_COMPILER == LU_COMPILER_CLANG
   #if defined(LU_DEBUG_STL)

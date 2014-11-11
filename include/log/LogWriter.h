@@ -28,7 +28,7 @@
 #include "log/LogMessage.h"
 #include "log/ILogFormatter.h"
 
-namespace libutil
+namespace util
 {
 
 /**

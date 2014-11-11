@@ -28,7 +28,7 @@
 #include "memory/MemoryAllocator.h"
 #include "memory/StdLibAllocator.h"
 
-namespace libutil
+namespace util
 {
 
 /**

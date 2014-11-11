@@ -23,7 +23,7 @@
 
 #include "log/LogWriter.h"
 
-namespace libutil
+namespace util
 {
 
 LogWriter::LogWriter()

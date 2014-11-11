@@ -28,7 +28,7 @@
 #include <string>
 #include <ostream>
 
-namespace libutil
+namespace util
 {
 
 /**
@@ -49,7 +49,7 @@ public:
 
 }
 
-std::ostream& operator<<(std::ostream& os, const libutil::IToString& its)
+std::ostream& operator<<(std::ostream& os, const util::IToString& its)
 {
   os << its.toString();
   return os;

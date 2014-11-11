@@ -31,7 +31,7 @@
 #include <cstdarg>
 #include <sstream>
 
-namespace libutil
+namespace util
 {
 
 /**

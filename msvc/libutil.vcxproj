@@ -80,7 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\debug.h" />
     <ClInclude Include="..\include\log\ILogFormatter.h" />
     <ClInclude Include="..\include\log\Log.h" />
     <ClInclude Include="..\include\log\LogMessage.h" />

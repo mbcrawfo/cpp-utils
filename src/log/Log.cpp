@@ -26,7 +26,7 @@
 
 static const int PRINTF_BUFFER_SIZE = 256;
 
-namespace libutil
+namespace util
 {
 
 Log::Log(const std::string& logName, LogLevel outputLevel)

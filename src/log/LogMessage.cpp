@@ -23,7 +23,7 @@
 
 #include "log/LogMessage.h"
 
-namespace libutil
+namespace util
 {
 
 std::string toString(const LogLevel level)

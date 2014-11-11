@@ -28,7 +28,7 @@
 #include <chrono>
 #include <string>
 
-namespace libutil
+namespace util
 {
 
 /**

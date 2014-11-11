@@ -23,7 +23,7 @@
 
 #include "log/StreamLogWriter.h"
 
-namespace libutil
+namespace util
 {
 
 StreamLogWriter::StreamLogWriter(std::ostream& stream)
