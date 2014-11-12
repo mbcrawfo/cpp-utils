@@ -71,6 +71,9 @@
     <ClInclude Include="..\include\log\Log.h">
       <Filter>Header Files\log</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\log\FileLogWriter.h">
+      <Filter>Header Files\log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\test\test.cpp">
@@ -86,6 +89,9 @@
       <Filter>Source Files\log</Filter>
     </ClCompile>
     <ClCompile Include="..\src\log\LogWriter.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\log\FileLogWriter.cpp">
       <Filter>Source Files\log</Filter>
     </ClCompile>
   </ItemGroup>

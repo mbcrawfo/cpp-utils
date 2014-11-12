@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\log\FileLogWriter.h" />
     <ClInclude Include="..\include\log\ILogFormatter.h" />
     <ClInclude Include="..\include\log\Log.h" />
     <ClInclude Include="..\include\log\LogMessage.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="..\include\utility\Singularity.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\log\FileLogWriter.cpp" />
     <ClCompile Include="..\src\log\Log.cpp" />
     <ClCompile Include="..\src\log\LogMessage.cpp" />
     <ClCompile Include="..\src\log\LogWriter.cpp" />
