@@ -87,50 +87,9 @@ bool Log::removeWriter(const std::string& name)
   return true;
 }
 
-void Log::verbose(const std::string& tag, const std::string& msg)
+Log::StreamHelper Log::info(const std::string& tag)
 {
-#ifdef LU_LOG_DISABLE_VERBOSE
-  LU_UNUSED(tag);
-  LU_UNUSED(msg);
-#else
-  log(LogLevel::Verbose, tag, msg);
-#endif
-}
-
-void Log::verbosef(const std::string& tag, const char* fmt, ...)
-{
-#ifdef LU_LOG_DISABLE_VERBOSE
-  LU_UNUSED(tag);
-  LU_UNUSED(fmt);
-#else
-  va_list args;
-  va_start(args, fmt);
-  logv(LogLevel::Verbose, tag, fmt, args);
-  va_end(args);
-#endif
-}
-
-void Log::debug(const std::string& tag, const std::string& msg)
-{
-#ifdef LU_LOG_DISABLE_DEBUG
-  LU_UNUSED(tag);
-  LU_UNUSED(msg);
-#else
-  log(LogLevel::Debug, tag, msg);
-#endif
-}
-
-void Log::debugf(const std::string& tag, const char* fmt, ...)
-{
-#ifdef LU_LOG_DISABLE_DEBUG
-  LU_UNUSED(tag);
-  LU_UNUSED(fmt);
-#else
-  va_list args;
-  va_start(args, fmt);
-  logv(LogLevel::Debug, tag, fmt, args);
-  va_end(args);
-#endif
+  return stream(LogLevel::Info, tag);
 }
 
 void Log::info(const std::string& tag, const std::string& msg)
@@ -146,6 +105,11 @@ void Log::infof(const std::string& tag, const char* fmt, ...)
   va_end(args);
 }
 
+Log::StreamHelper Log::warning(const std::string& tag)
+{
+  return stream(LogLevel::Warning, tag);
+}
+
 void Log::warning(const std::string& tag, const std::string& msg)
 {
   log(LogLevel::Warning, tag, msg);
@@ -157,6 +121,11 @@ void Log::warningf(const std::string& tag, const char* fmt, ...)
   va_start(args, fmt);
   logv(LogLevel::Warning, tag, fmt, args);
   va_end(args);
+}
+
+Log::StreamHelper Log::error(const std::string& tag)
+{
+  return stream(LogLevel::Error, tag);
 }
 
 void Log::error(const std::string& tag, const std::string& msg)
@@ -259,7 +228,10 @@ Log::StreamHelper::StreamHelper(Log& log, LogLevel level,
 Log::StreamHelper& Log::StreamHelper::operator<<(
   Log::StreamHelper::Manipulator manip)
 {
-  manip(impl->os);
+  if (impl)
+  {
+    manip(impl->os);
+  }  
   return *this;
 }
 

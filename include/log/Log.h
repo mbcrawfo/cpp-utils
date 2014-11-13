@@ -108,14 +108,19 @@ public:
    * If LU_LOG_DISABLE_VERBOSE is defined then the verbose methods are no-ops.
    * If LU_LOG_DISABLE_DEBUG is defined then the debug methods are no-ops.
    */
+  StreamHelper verbose(const std::string& tag);
   void verbose(const std::string& tag, const std::string& msg);
   void verbosef(const std::string& tag, const char* fmt, ...);
+  StreamHelper debug(const std::string& tag);
   void debug(const std::string& tag, const std::string& msg);
   void debugf(const std::string& tag, const char* fmt, ...);
+  StreamHelper info(const std::string& tag);
   void info(const std::string& tag, const std::string& msg);
   void infof(const std::string& tag, const char* fmt, ...);
+  StreamHelper warning(const std::string& tag);
   void warning(const std::string& tag, const std::string& msg);
   void warningf(const std::string& tag, const char* fmt, ...);
+  StreamHelper error(const std::string& tag);
   void error(const std::string& tag, const std::string& msg);
   void errorf(const std::string& tag, const char* fmt, ...);
   // \}
@@ -164,7 +169,7 @@ private:
     using Manipulator = std::ostream& (*)(std::ostream&);
 
     // constructors
-    StreamHelper() = delete;
+    StreamHelper() = default;
     StreamHelper(Log& log, LogLevel level, const std::string& tag);
     StreamHelper(const StreamHelper&) = default;
     // operators
@@ -210,10 +215,79 @@ using WeakLogPtr = WeakPtr<Log>;
 * Definitions
 ****************************************************************************/
 
+inline Log::StreamHelper Log::verbose(const std::string& tag)
+{
+#ifdef LU_LOG_DISABLE_VERBOSE
+  LU_UNUSED(tag);
+  return StreamHelper();
+#else
+  return stream(LogLevel::Verbose, tag);
+#endif
+}
+
+inline void Log::verbose(const std::string& tag, const std::string& msg)
+{
+#ifdef LU_LOG_DISABLE_VERBOSE
+  LU_UNUSED(tag);
+  LU_UNUSED(msg);
+#else
+  log(LogLevel::Verbose, tag, msg);
+#endif
+}
+
+inline void Log::verbosef(const std::string& tag, const char* fmt, ...)
+{
+#ifdef LU_LOG_DISABLE_VERBOSE
+  LU_UNUSED(tag);
+  LU_UNUSED(fmt);
+#else
+  va_list args;
+  va_start(args, fmt);
+  logv(LogLevel::Verbose, tag, fmt, args);
+  va_end(args);
+#endif
+}
+
+inline Log::StreamHelper Log::debug(const std::string& tag)
+{
+#ifdef LU_LOG_DISABLE_DEBUG
+  LU_UNUSED(tag);
+  return StreamHelper();
+#else
+  return stream(LogLevel::Debug, tag);
+#endif
+}
+
+inline void Log::debug(const std::string& tag, const std::string& msg)
+{
+#ifdef LU_LOG_DISABLE_DEBUG
+  LU_UNUSED(tag);
+  LU_UNUSED(msg);
+#else
+  log(LogLevel::Debug, tag, msg);
+#endif
+}
+
+inline void Log::debugf(const std::string& tag, const char* fmt, ...)
+{
+#ifdef LU_LOG_DISABLE_DEBUG
+  LU_UNUSED(tag);
+  LU_UNUSED(fmt);
+#else
+  va_list args;
+  va_start(args, fmt);
+  logv(LogLevel::Debug, tag, fmt, args);
+  va_end(args);
+#endif
+}
+
 template<typename T>
 Log::StreamHelper& Log::StreamHelper::operator<<(const T& arg)
 {
-  impl->os << arg;
+  if (impl)
+  {
+    impl->os << arg;
+  }  
   return *this;
 }
 

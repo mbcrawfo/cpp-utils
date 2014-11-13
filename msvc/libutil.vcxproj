@@ -96,6 +96,7 @@
     <ClInclude Include="..\include\utility\IToString.h" />
     <ClInclude Include="..\include\utility\Singleton.h" />
     <ClInclude Include="..\include\utility\Singularity.h" />
+    <ClInclude Include="..\include\utility\stream_manip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\log\FileLogWriter.cpp" />
