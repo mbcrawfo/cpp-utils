@@ -31,16 +31,12 @@
 namespace util
 {
 
-// \{
 /**
  * Manipulates an input or output stream to output or read integers in 
  * hexadecimal format with leading zeros.
  */
 template<typename T, std::size_t width = sizeof(T) * 2>
 std::ostream& hex(std::ostream& str);
-template<typename T, std::size_t width = sizeof(T) * 2>
-std::istream& hex(std::istream& str);
-// \}
 
 /****************************************************************************
 * Definitions
@@ -49,14 +45,7 @@ std::istream& hex(std::istream& str);
 template<typename T, std::size_t width>
 std::ostream& hex(std::ostream& str)
 {
-  str << std::setw(width) << std::setfill('0');
-  return str;
-}
-
-template<typename T, std::size_t width>
-std::istream& hex(std::istream& str)
-{
-  str >> std::setw(width) >> std::setfill('0');
+  str << std::setw(width) << std::setfill('0') << std::hex;
   return str;
 }
 
@@ -71,13 +60,6 @@ ostream& operator<<(ostream& os, decltype(util::hex<T>) h)
 {
   os << h;
   return os;
-}
-
-template<typename T>
-istream& operator<<(istream& is, decltype(util::hex<T>) h)
-{
-  is >> h;
-  return is;
 }
 
 }
