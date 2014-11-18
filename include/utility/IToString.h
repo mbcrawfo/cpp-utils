@@ -49,7 +49,7 @@ public:
 
 }
 
-std::ostream& operator<<(std::ostream& os, const util::IToString& its)
+inline std::ostream& operator<<(std::ostream& os, const util::IToString& its)
 {
   os << its.toString();
   return os;
