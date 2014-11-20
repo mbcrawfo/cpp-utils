@@ -51,7 +51,7 @@ public:
  * way to declare a single specialization for these functors since template 
  * containers are instantiated using the most derived type.
  */
-#define HASHABLE_STL_HELPER_DECLARATION(hashable) \
+#define LU_HASHABLE_STL_HELPER_DECLARATION(hashable) \
   namespace std { \
     template<> \
     struct hash<hashable> { \
