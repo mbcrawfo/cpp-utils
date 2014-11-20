@@ -24,6 +24,8 @@
 #include "log/Log.h"
 #include <cstdio>
 
+// The printf style log functions use a fixed size stack buffer to process the 
+// format string.
 static const int PRINTF_BUFFER_SIZE = 256;
 
 namespace util
@@ -228,10 +230,14 @@ Log::StreamHelper::StreamHelper(Log& log, LogLevel level,
 Log::StreamHelper& Log::StreamHelper::operator<<(
   Log::StreamHelper::Manipulator manip)
 {
-  if (impl)
-  {
-    manip(impl->os);
-  }  
+  manip(impl->os);
+  return *this;
+}
+
+
+Log::DummyStreamHelper& Log::DummyStreamHelper::operator<<(Manipulator manip)
+{
+  LU_UNUSED(manip);
   return *this;
 }
 

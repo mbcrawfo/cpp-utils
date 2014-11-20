@@ -48,9 +48,26 @@ private:
   std::unordered_map<std::string, StrongLogWriterPtr> writers;
 
   class StreamHelper;
+  class DummyStreamHelper;
+  class StreamHelperImpl;
+
+  using VerboseStreamReturnType =
+#ifdef LU_LOG_DISABLE_VERBOSE
+    DummyStreamHelper;
+#else
+    StreamHelper;
+#endif
+
+  using DebugStreamReturnType =
+#ifdef LU_LOG_DISABLE_VERBOSE
+    DummyStreamHelper;
+#else
+    StreamHelper;
+#endif
   
 public:
   // constructors
+  Log() = delete;
   Log(const Log&) = default;
   explicit Log(const std::string& logName, 
     LogLevel outputLevel = LogLevel::All);
@@ -108,10 +125,10 @@ public:
    * If LU_LOG_DISABLE_VERBOSE is defined then the verbose methods are no-ops.
    * If LU_LOG_DISABLE_DEBUG is defined then the debug methods are no-ops.
    */
-  StreamHelper verbose(const std::string& tag);
+  VerboseStreamReturnType verbose(const std::string& tag);
   void verbose(const std::string& tag, const std::string& msg);
   void verbosef(const std::string& tag, const char* fmt, ...);
-  StreamHelper debug(const std::string& tag);
+  DebugStreamReturnType debug(const std::string& tag);
   void debug(const std::string& tag, const std::string& msg);
   void debugf(const std::string& tag, const char* fmt, ...);
   StreamHelper info(const std::string& tag);
@@ -150,15 +167,14 @@ private:
    * Creates a LogMessage from the provided parameters and forwards that 
    * message to the writers of this log.
    */
-  void dispatch(LogLevel level, const std::string& tag, const std::string& msg);
-
-
-  class StreamHelperImpl;
+  void dispatch(LogLevel level, const std::string& tag, const std::string& msg);  
 
   /**
-   * Helper class that allows logs to accept stream input.  Input is 
-   * accumulated in a stringstream and dispatched back to the log when the 
-   * helper is destroyed.
+   * Helper class that allows logs to accept stream input.  Uses a variant of 
+   * the pimpl idiom with shared pointers so that this object may be copied 
+   * but final writing only occurs when the implementation is destroyed.  
+   * Necessary because returning by value requires an accessible copy 
+   * constructor.
    */
   class StreamHelper final
   {
@@ -169,7 +185,7 @@ private:
     using Manipulator = std::ostream& (*)(std::ostream&);
 
     // constructors
-    StreamHelper() = default;
+    StreamHelper() = delete;
     StreamHelper(Log& log, LogLevel level, const std::string& tag);
     StreamHelper(const StreamHelper&) = default;
     // operators
@@ -187,7 +203,32 @@ private:
     StreamHelper& operator<<(Manipulator manip);
   };
 
-  class StreamHelperImpl
+  /**
+   * This helper class does nothing.  Used to allow verbose and debug methods 
+   * to be disabled via a preprocessor define.
+   */
+  class DummyStreamHelper
+  {
+  public:
+    using Manipulator = std::ostream& (*)(std::ostream&);
+
+    // constructors
+    DummyStreamHelper() = default;
+    DummyStreamHelper(const DummyStreamHelper&) = default;
+    // operators
+    DummyStreamHelper& operator=(const DummyStreamHelper&) = delete;
+
+    template<typename T>
+    DummyStreamHelper& operator<<(const T& arg);
+    DummyStreamHelper& operator<<(Manipulator manip);
+  };
+
+  /**
+   * Implementation of the stream helper.  Accumulates the log message in a 
+   * stringstream and dispatches the message back to the log when this 
+   * helper is destroyed.
+   */
+  class StreamHelperImpl final
   {
   private:
     Log& log;
@@ -215,11 +256,14 @@ using WeakLogPtr = WeakPtr<Log>;
 * Definitions
 ****************************************************************************/
 
-inline Log::StreamHelper Log::verbose(const std::string& tag)
+// These functions are inlined so that the disable macros perform correctly 
+// even if we're compiled as a static lib.
+
+inline Log::VerboseStreamReturnType Log::verbose(const std::string& tag)
 {
 #ifdef LU_LOG_DISABLE_VERBOSE
   LU_UNUSED(tag);
-  return StreamHelper();
+  return DummyStreamHelper();
 #else
   return stream(LogLevel::Verbose, tag);
 #endif
@@ -248,11 +292,11 @@ inline void Log::verbosef(const std::string& tag, const char* fmt, ...)
 #endif
 }
 
-inline Log::StreamHelper Log::debug(const std::string& tag)
+inline Log::DebugStreamReturnType Log::debug(const std::string& tag)
 {
 #ifdef LU_LOG_DISABLE_DEBUG
   LU_UNUSED(tag);
-  return StreamHelper();
+  return DummyStreamHelper();
 #else
   return stream(LogLevel::Debug, tag);
 #endif
@@ -284,10 +328,14 @@ inline void Log::debugf(const std::string& tag, const char* fmt, ...)
 template<typename T>
 Log::StreamHelper& Log::StreamHelper::operator<<(const T& arg)
 {
-  if (impl)
-  {
-    impl->os << arg;
-  }  
+  impl->os << arg;
+  return *this;
+}
+
+template<typename T>
+Log::DummyStreamHelper& Log::DummyStreamHelper::operator<<(const T& arg)
+{
+  LU_UNUSED(arg);
   return *this;
 }
 
